@@ -6,7 +6,7 @@ from department import  views
 router = DefaultRouter()
 router.register('department', viewset=views.DepartmentView)
 
-app_name = 'depatment'
+app_name = 'department'
 
 urlpatterns = [
     path('',include(router.urls))

@@ -2,10 +2,13 @@ from rest_framework import viewsets,mixins,status
 from rest_framework.decorators import action
 from rest_framework.response import  Response
 from employee.models import Employee,EmployeeAdd
-from employee.Seriallizer import EmployeeSerializer,EmployeeAddSerializer
+from employee.Seriallizer import EmployeeSerializer,EmployeeAddSerializer,EmployeDtoSerializer
+from employee.Dto import EmployeeDto
 
-
-
+class person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
 
 class EmployeeView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
 
@@ -14,34 +17,16 @@ class EmployeeView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.Create
 
     def get_queryset(self):
         queryset = Employee.objects.all()
-        num = 10
-        for i in range(10):
-         if i %2 == 0:
-           print(i ,'is Even')
-         else:
-          print(i,'is Odd')
-
-        print(self.add(1,2))
-        print(self.subtract(4,5))
-        print(self.div(10,2))
-        print(self.mul(5,2))
         return queryset
 
-    def add (self,x,y):
-        return x+y
-    def subtract (self,x,y):
-        return x-y
-    def div (self,x,y):
-        return x/y
-    def mul (self,x,y):
-        return x*y
-
-
-
-
-
-
-
+    @action(methods=['GET'],detail=False,url_path='getAll')
+    def get_all_employess(self,request):
+        allData = Employee.objects.all()
+        empList = []
+        for data in allData:
+            empList.append(EmployeeDto(data))
+        serializer = EmployeDtoSerializer(empList,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     @action(methods=['GET'], detail=False, url_path='EmployeeName')

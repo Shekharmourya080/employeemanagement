@@ -8,3 +8,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = ('deptName','deptContactPerson')
+
+class DepartmentDtoSerializer(serializers.Serializer):
+    deptName = serializers.CharField()
+    deptContactPerson = serializers.CharField()
