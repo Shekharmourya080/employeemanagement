@@ -14,6 +14,13 @@ class EmployeDtoSerializer(serializers.Serializer):
     department = DepartmentDtoSerializer()
     designation = DesignationDtoSerializer()
 
+class EmployeeAddDtoSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    EmpState = serializers.CharField()
+    EmpDistrict = serializers.CharField()
+    EmpContact = serializers.CharField()
+    Employee = EmployeDtoSerializer()
+
 
 
 

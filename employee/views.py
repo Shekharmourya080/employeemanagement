@@ -2,8 +2,9 @@ from rest_framework import viewsets,mixins,status
 from rest_framework.decorators import action
 from rest_framework.response import  Response
 from employee.models import Employee,EmployeeAdd
-from employee.Seriallizer import EmployeeSerializer,EmployeeAddSerializer,EmployeDtoSerializer
+from employee.Seriallizer import EmployeeSerializer,EmployeeAddSerializer,EmployeDtoSerializer,EmployeeAddDtoSerializer
 from employee.Dto import EmployeeDto
+from employee.Dto import EmployeeAddDto
 
 class person:
     def __init__(self, name, age):
@@ -70,6 +71,15 @@ class EmployeeAddView(viewsets.GenericViewSet, mixins.ListModelMixin,mixins.Crea
         EmpState = self.request.query_params.get('EmpState')
         queryset = EmployeeAdd.objects.all().filter(EmpState=EmpState)
         serializer = EmployeeAddSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=['GET'],detail=False,url_path='searchByEmpAdd')
+    def get_EmployeeAddDto(self,request):
+        allData = EmployeeAdd.objects.all()
+        Empaddlist = []
+        for data in allData:
+            Empaddlist.append(EmployeeAddDto(data))
+        serializer = EmployeeAddDtoSerializer(Empaddlist, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
